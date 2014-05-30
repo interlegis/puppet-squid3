@@ -1,0 +1,17 @@
+#^http:\/\/[0-9]+.[0-9]+.[0-9]+.[0-9]+\/
+^http:\/\/.*\/avatar\?$
+^http:\/\/.*\/cAdv\.jsp\?$
+^http:\/\/.*\/contactListAjax\.jsp$
+^http:\/\/.*\/gateway\/gateway\.dl.*$
+^http:\/\/.*\/servlets\/ajax$
+^http:\/\/.*\/servlets\/callContact\?$
+^http:\/\/.*\/servlets\/contacts$
+^http:\/\/.*\/servlets\/contactsHidden$
+^http:\/\/.*\/servlets\/events$
+^http:\/\/.*\/servlets\/login$
+^http:\/\/.*\/servlets\/login2$
+^http:\/\/.*\/servlets\/sendMessage$
+^http:\/\/.*\/servlets\/typingEventNotification\?$
+^http:\/\/.*\/servlets\/wz_dragdrop\.jsp$
+# MODELO
+# MODELO

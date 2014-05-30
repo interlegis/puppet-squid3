@@ -1,0 +1,91 @@
+##############################################################################
+# ATENCAO: Este arquivo e gerado automaticamente pelo puppet<% if @fqdn %> em <%= @fqdn %><% end -%>.
+# Alteracoes neste aquivo serao sobrescrevidas periodicamente pelo puppet!
+##############################################################################
+
+# ACLs PREDEFINIDAS
+acl manager proto cache_object
+acl localhost src 127.0.0.1/32 ::1
+acl to_localhost dst 127.0.0.0/8 0.0.0.0/32 ::1
+acl localnet src fe80::/10      # RFC 4291 link-local (directly plugged) machines
+
+acl SSL_ports port 443
+acl Safe_ports port 80			# http
+acl Safe_ports port 21			# ftp
+acl Safe_ports port 443			# https
+acl Safe_ports port 70			# gopher
+acl Safe_ports port 210			# wais
+acl Safe_ports port 1025-65535	# unregistered ports
+acl Safe_ports port 280			# http-mgmt
+acl Safe_ports port 488			# gss-http
+acl Safe_ports port 591			# filemaker
+acl Safe_ports port 777			# multiling http
+acl CONNECT method CONNECT
+
+# HTTP_ACCESS PREDEFINIDO
+http_access allow manager localhost
+http_access deny manager
+http_access deny !Safe_ports
+http_access deny CONNECT !SSL_ports
+
+# ACLs PERSONALIZADAS
+<% @acl.each do |line| -%>
+acl <%= line %>
+<% end -%>
+
+# HTTP_ACCESS
+<% @http_access.each do |line| -%>
+http_access <%= line %>
+<% end -%>
+http_access allow localnet
+http_access allow localhost
+http_access deny all
+
+# ICP_ACCESS
+<% @icp_access.each do |line| -%>
+icp_access <%= line %>
+<% end -%>
+htcp_access deny all
+
+# HTTP_PORT
+<% @http_port.each do |line| -%>
+http_port <%= line %>
+<% end -%>
+
+# CACHE_DIR
+<% @cache_dir.each do |line| -%>
+cache_dir <%= line %>
+<% end -%>
+
+# CONFIGURACOES GERAIS
+hierarchy_stoplist cgi-bin ?
+visible_hostname <%= @visible_hostname %>
+coredump_dir <%= @coredump_dir %>
+maximum_object_size_in_memory <%= @maximum_object_size_in_memory %>
+maximum_object_size <%= @maximum_object_size %>
+cache_mgr <%= @cache_mgr %>
+access_log <%= @access_log %>
+cache_mem <%= @cache_mem %>
+cache_store_log <%= @cache_store_log %>
+cache_swap_low 95
+cache_swap_high 97
+memory_replacement_policy <%= @memory_replacement_policy %>
+cache_replacement_policy <%= @cache_replacement_policy %>
+store_dir_select_algorithm least-load
+<% @cache.each do |line| -%>
+cache <%= line %>
+<% end -%>
+
+refresh_pattern   ^ftp:              1440    20%    10080
+refresh_pattern   ^gopher:           1440     0%     1440
+refresh_pattern   -i (/cgi-bin/|\?)     0     0%        0
+refresh_pattern   Packages\.bz2$        0    20%     4320 refresh-ims
+refresh_pattern   Sources\.bz2$         0    20%     4320 refresh-ims
+refresh_pattern   Release\.gpg$         0    20%     4320 refresh-ims
+refresh_pattern   Release$              0    20%     4320 refresh-ims
+refresh_pattern   .                     0    20%     4320
+
+# CONFIGURACOES PERSONALIZADAS DO USUARIO
+<% @config_hash.each do |k,v| -%>
+<%= "%*s"%[-30,k] %> <%= v %>
+<% end -%>
